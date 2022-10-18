@@ -12,7 +12,7 @@ nav{
 }
 .link{
     color:aliceblue;
-
+    text-decoration: none;
 }
 .link:hover{
     color:red;

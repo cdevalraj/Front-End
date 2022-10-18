@@ -1,9 +1,10 @@
-import { Sign } from "./Forms";
+import Sign from "./Sign";
 import SLNav from "./slnav";
+import './forms.css';
 
 function Signup() {
     return (
-        <div>
+        <div className="container">
             <SLNav />
             <Sign />
         </div>

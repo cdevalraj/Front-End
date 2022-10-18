@@ -1,0 +1,48 @@
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 18px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #04AA6D;
+    color: white;
+    padding: 15px 0;
+    margin: 8px 50%;
+    border: none;
+    cursor: pointer;
+    width: 55%;
+}
+
+.container {
+    padding: 50px;
+    text-align: center;
+    margin: 100px 40% 12px 40%;
+    border: 3px solid #f1f1f1;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+.links{
+    padding-right: 25%;
+    color: #13b9ac;
+    text-decoration: none;
+}
+.links:hover{
+    color: aquamarine;
+}
+.linkl{
+    color: #13b9ac;
+    text-decoration: none;
+}
+.linkl:hover{
+    color: aquamarine;
+}
+.nlinks{
+    padding-bottom: 20%;
+}

@@ -1,9 +1,10 @@
-import { Log } from "./Forms";
+import Log from "./Log";
 import SLNav from "./slnav";
+import './forms.css';
 
 function Login() {
     return (
-        <div>
+        <div className="container">
             <SLNav />
             <Log/>
         </div>

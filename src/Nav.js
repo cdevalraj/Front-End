@@ -5,7 +5,7 @@ function Nav()
         <nav>
             <Link to="/" className='link'>Home</Link>
             <Link to="/about" className='link'>About</Link>
-            <Link to="/login" className='link'>Login/Signup</Link>
+            <Link to="/auth/login" className='link'>Login/Signup</Link>
         </nav>
     )
 }

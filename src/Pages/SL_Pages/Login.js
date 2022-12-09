@@ -1,36 +1,44 @@
-import SLNav from "./slnav";
 import './forms.css';
 import { useEffect, useState } from "react";
-// import AuthContext from "../Context/AuthProvider";
 import axios from '../../api/axios';
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import Cookies from 'js-cookies';
 
 function Login() {
-    const [email, setEmail] = useState('')
+    const [ue, setUe] = useState('')
     const [pwd, setPwd] = useState('')
     const [error, setError] = useState('')
-    // const {setAuth}=useContext(AuthContext)
+    const { setAuth } = useAuth();
+    const nav = useNavigate();
 
     useEffect(() => {
         setError('')
-    }, [email, pwd])
+    }, [ue, pwd])
 
 
     const SubmitHandler = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/login',
-                JSON.stringify({ email, pwd }),
+            const res = await axios.post('/auth/login',
+                JSON.stringify({ ue, pwd }),
                 {
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: true
                 }
             );
-            // const accessToken=res?.data?.accessToken;
-            // const role=res?.data?.role;
-            // const user=res?.data?.user;
-            // const email=res?.data?.user;
-            // setAuth({user,pwd,role,accessToken});
-            setEmail('')
+            const accessToken = res?.data?.accessToken;
+            const role = res?.data?.role;
+            const username = res?.data?.username;
+            const refreshToken = res?.data?.refreshtoken;
+            setAuth({ accessToken, refreshToken, role, username });
+            Cookies.setItem('accessToken',accessToken);
+            Cookies.setItem('refreshToken',refreshToken);
+            Cookies.setItem('username',username)
+            Cookies.setItem('role',role)
+            setUe('')
             setPwd('')
+            nav('/')
         }
         catch (er) {
             if (!er?.response)
@@ -42,20 +50,16 @@ function Login() {
             else
                 setError('Login Failed')
         }
-
     }
 
     return (
-        <div className="container">
-            <SLNav />
-            <div>
-                <p>{error}</p>
-                <form onSubmit={SubmitHandler}>
-                    <input type="text" placeholder="Your username or email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <input type="password" placeholder="Your password" value={pwd} onChange={(e) => setPwd(e.target.value)} required />
-                    <button >Log In</button>
-                </form>
-            </div>
+        <div>
+            <p>{error}</p>
+            <form onSubmit={SubmitHandler}>
+                <input type="text" placeholder="Your username or email" value={ue} onChange={(e) => setUe(e.target.value)} required />
+                <input type="password" placeholder="Your password" value={pwd} onChange={(e) => setPwd(e.target.value)} required />
+                <button className='button'>Log In</button>
+            </form>
         </div>
     );
 }

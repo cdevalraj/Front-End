@@ -1,19 +1,40 @@
-.App
-{
-    text-align:center;
+.App {
+    text-align: center;
 }
-nav{
+
+nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    min-height:10vh;
-    background:black;
+    min-height: 10vh;
+    background: black;
     color: white;
 }
-.link{
-    color:aliceblue;
+
+.grid {
+    margin-top: 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    max-width: 800px;
+}
+
+.note {
+    height: auto;
+    width: 200px;
+    padding: 0.2rem 1rem;
+    margin: 0.5rem;
+    background: #ff6600cb;
+    box-shadow: 4px 4px 8px 1px #00000075;
+    border-radius: 2px;
+}
+
+.link {
+    color: aliceblue;
     text-decoration: none;
 }
-.link:hover{
-    color:red;
+
+.link:hover {
+    color: red;
 }

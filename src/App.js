@@ -24,7 +24,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route element={<RequireAuth AllowedRole={'Basic'} />}>
               <Route path="/" element={<Home />} />
-              <Route path="/note/*" element={<Note />} />
+              <Route path="/note" element={<Note />} />
+              <Route path="/note/:id/:title/:con" element={<Note />} />
               <Route path="/profile" element={<></>} />
             </Route>
             <Route element={<RequireAdminAuth AllowedRole={'Admin'} />}>

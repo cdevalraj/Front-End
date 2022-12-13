@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "../api/axios";
 import refresh from "../components/Refresher";
 import useAuth from "../hooks/useAuth";
+import Cookies from 'js-cookies';
 
 function Home() {
     const { auth, setAuth } = useAuth()
@@ -10,22 +11,24 @@ function Home() {
     
     useEffect(() => {
         const hasAccess = async (accessToken, refreshToken) => {
+            refreshToken=Cookies.getItem('refreshToken')
             if (!refreshToken)
                 return;
             const isTokenExpired = (token) => Date.now() >= (JSON.parse(atob(token.split('.')[1]))).exp * 1000
             if (isTokenExpired(accessToken)) {
-                accessToken = await refresh(refreshToken);
+                console.log("Token has expired")
+                let res = await refresh(refreshToken);
                 setAuth({
-                    accessToken,
+                    accessToken:res.accessToken,
                     refreshToken,
-                    role: auth.role,
-                    username: auth.username
+                    role: res.role,
+                    username: res.username
                 })
             }
         };
         (async () => {
             await hasAccess(auth.accessToken, auth.refreshToken)
-            const res = await axios.get('/notes/',
+            let res = await axios.get('/notes/',
                 {
                     headers: { "Authorization": `Bearer ${auth.accessToken}` }
                 }
@@ -53,7 +56,7 @@ function Home() {
 function Notes({ notes }) {
     return notes.map((ele, idx) => {
         return (
-            <Link to={`/notes/${ele.id}`} key={idx}>
+            <Link to={`/note/${ele._id}/${ele.title}/${ele.content}`} key={idx}>
                 <div className="note">
                     <h2>{ele.title}</h2>
                     <h5>{ele.content}</h5>

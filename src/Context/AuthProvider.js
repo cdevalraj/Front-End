@@ -1,22 +1,31 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Cookies from 'js-cookies';
+import refresh from "../components/Refresher";
 
-const getdata=()=>{
-    let accessToken=Cookies.getItem('accessToken')
-    let refreshTokenr=Cookies.getItem('refreshToken')
-    let username=Cookies.getItem('username')
-    let role=Cookies.getItem('role')
-    let user={accessToken,refreshTokenr,username,role}
-    if(user)
-        return user;
-    return {}
-}
-const AuthContext=createContext({})
+const AuthContext = createContext({})
 
-export const AuthProvider=({children})=>{
-    const [auth,setAuth]=useState(getdata());
+export const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState({});
+    const getdata = () => {
+        let refreshToken = Cookies.getItem('refreshToken')
+        if (refreshToken) {
+            refresh(refreshToken)
+                .then((res) => {
+                    setAuth({
+                        accessToken: res.accessToken,
+                        refreshToken,
+                        role: res.role,
+                        username: res.username
+                    })
+                })
+                .catch((er) => console.log("Inside catch", er))
+        }
+    }
+    useEffect(() => {
+        getdata()
+    }, [])
     return (
-        <AuthContext.Provider value={{auth,setAuth}}>
+        <AuthContext.Provider value={{ auth, setAuth }}>
             {children}
         </AuthContext.Provider>
     )

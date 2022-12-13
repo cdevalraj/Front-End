@@ -32,10 +32,7 @@ function Login() {
             const username = res?.data?.username;
             const refreshToken = res?.data?.refreshtoken;
             setAuth({ accessToken, refreshToken, role, username });
-            Cookies.setItem('accessToken',accessToken);
-            Cookies.setItem('refreshToken',refreshToken);
-            Cookies.setItem('username',username)
-            Cookies.setItem('role',role)
+            Cookies.setItem('refreshToken', refreshToken, { path:'/', expires: 5 });
             setUe('')
             setPwd('')
             nav('/')

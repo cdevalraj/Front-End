@@ -1,26 +1,24 @@
 import { Link } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
-import Cookies from 'js-cookies';
-import axios from './api/axios';
+import useAxiosPrivate from './hooks/useAxiosPrivate';
 
 function Nav() {
     const { auth, setAuth } = useAuth()
-    function LogOut(refreshToken) {
-        axios.delete('/auth/logout',
-            { data:{token: refreshToken}},
-            {
-                headers: { 'Content-Type': 'application/json' }
-            }).then((res) => {
-                setAuth({})
-                Cookies.removeItem('refreshToken')
-            }).catch(er => console.log(er))
+    const axiosPrivate = useAxiosPrivate();
+    const LogOut=async ()=>{
+        try {
+            await axiosPrivate.delete('/auth/logout').catch((er)=>console.log(er.message))
+            setAuth({})
+        } catch (er) {
+            console.log(er.message)
+        }
     }
     return (
         <nav>
             {auth.accessToken && (<Link to="/" className='link'>Home</Link>)}
             <Link to="/about" className='link'>About</Link>
             {!auth.accessToken && (<Link to="/auth/login" className='link'>Login/Signup</Link>)}
-            {auth.accessToken && (<button onClick={() => LogOut(auth.refreshToken)}>Logout</button>)}
+            {auth.accessToken && (<button onClick={() => {LogOut()}}>Logout</button>)}
         </nav>
     )
 }

@@ -12,8 +12,6 @@ import RequireAdminAuth from './components/RequireAdminAuth';
 import Admin from './Pages/Admin';
 import Note from './Pages/Note';
 
-
-
 function App() {
   return (
     <Router>

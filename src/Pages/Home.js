@@ -1,41 +1,33 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "../api/axios";
-import refresh from "../components/Refresher";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Cookies from 'js-cookies';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function Home() {
-    const { auth, setAuth } = useAuth()
+    const { auth } = useAuth()
     const [notes, setNotes] = useState([])
-    
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+    const location = useLocation();
+    /* eslint-disable*/
     useEffect(() => {
-        const hasAccess = async (accessToken, refreshToken) => {
-            refreshToken=Cookies.getItem('refreshToken')
-            if (!refreshToken)
-                return;
-            const isTokenExpired = (token) => Date.now() >= (JSON.parse(atob(token.split('.')[1]))).exp * 1000
-            if (isTokenExpired(accessToken)) {
-                console.log("Token has expired")
-                let res = await refresh(refreshToken);
-                setAuth({
-                    accessToken:res.accessToken,
-                    refreshToken,
-                    role: res.role,
-                    username: res.username
-                })
+        const getNotes = async () => {
+            try {
+                let res = await axiosPrivate.get('/notes/',
+                    {
+                        headers: { "Authorization": `Bearer ${auth.accessToken}` }
+                    }
+                );
+                setNotes(res.data)
             }
-        };
-        (async () => {
-            await hasAccess(auth.accessToken, auth.refreshToken)
-            let res = await axios.get('/notes/',
-                {
-                    headers: { "Authorization": `Bearer ${auth.accessToken}` }
-                }
-            );
-            setNotes(res.data)
-        })()
-    }, [auth, setAuth])
+            catch(er)
+            {
+                console.error(er);
+                navigate('/auth/login', { state: { from: location }, replace: true });
+            }
+        }
+        getNotes();
+    }, [])
     return (
         <div>
             {notes.length === 0 && (

@@ -1,16 +1,18 @@
 import './forms.css';
 import { useEffect, useState } from "react";
-import axios from '../../api/axios';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import Cookies from 'js-cookies';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function Login() {
     const [ue, setUe] = useState('')
     const [pwd, setPwd] = useState('')
     const [error, setError] = useState('')
     const { setAuth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const nav = useNavigate();
+    const location=useLocation()
+    const from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
         setError('')
@@ -20,11 +22,10 @@ function Login() {
     const SubmitHandler = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/auth/login',
+            const res = await axiosPrivate.post('/auth/login',
                 JSON.stringify({ ue, pwd }),
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: true
+                    headers: { 'Content-Type': 'application/json' }
                 }
             );
             const accessToken = res?.data?.accessToken;
@@ -32,10 +33,9 @@ function Login() {
             const username = res?.data?.username;
             const refreshToken = res?.data?.refreshtoken;
             setAuth({ accessToken, refreshToken, role, username });
-            Cookies.setItem('refreshToken', refreshToken, { path:'/', expires: 5 });
             setUe('')
             setPwd('')
-            nav('/')
+            nav(from,{replace:true})
         }
         catch (er) {
             if (!er?.response)

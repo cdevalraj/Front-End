@@ -8,10 +8,10 @@ function Login() {
     const [ue, setUe] = useState('')
     const [pwd, setPwd] = useState('')
     const [error, setError] = useState('')
-    const { setAuth } = useAuth();
+    const { setAuth, persist, setPersist } = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const nav = useNavigate();
-    const location=useLocation()
+    const location = useLocation()
     const from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
@@ -29,13 +29,10 @@ function Login() {
                 }
             );
             const accessToken = res?.data?.accessToken;
-            const role = res?.data?.role;
-            const username = res?.data?.username;
-            const refreshToken = res?.data?.refreshtoken;
-            setAuth({ accessToken, refreshToken, role, username });
+            setAuth({ accessToken});
             setUe('')
             setPwd('')
-            nav(from,{replace:true})
+            nav(from, { replace: true })
         }
         catch (er) {
             if (!er?.response)
@@ -49,6 +46,14 @@ function Login() {
         }
     }
 
+    const togglePersist = () => {
+        setPersist(prev => !prev);
+    }
+
+    useEffect(() => {
+        localStorage.setItem("persist", persist);
+    }, [persist])
+
     return (
         <div>
             <p>{error}</p>
@@ -56,6 +61,10 @@ function Login() {
                 <input type="text" placeholder="Your username or email" value={ue} onChange={(e) => setUe(e.target.value)} required />
                 <input type="password" placeholder="Your password" value={pwd} onChange={(e) => setPwd(e.target.value)} required />
                 <button className='button'>Log In</button>
+                <div>
+                    <input type="checkbox" onChange={togglePersist} checked={persist} />
+                    <label htmlFor="persist">Trust This Device</label>
+                </div>
             </form>
         </div>
     );

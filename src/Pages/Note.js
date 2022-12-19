@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
 import NoteForm from "../components/NoteForm";
-import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 export default function Note() {
     const [title, setTitle] = useState('')
@@ -10,10 +10,12 @@ export default function Note() {
     const { auth } = useAuth()
     const nav = useNavigate();
     const params=useParams()
+    const axiosPrivate=useAxiosPrivate()
+
     async function submitHandler_Save(e) {
         e.preventDefault();
         try {
-            await axios.post('/notes/save',
+            await axiosPrivate.post('/notes/save',
                 JSON.stringify({ username: auth.username, title, con }),
                 {
                     headers: {
@@ -33,7 +35,7 @@ export default function Note() {
     async function submitHandler_Update(e) {
         e.preventDefault();
         try {
-            await axios.patch(`/notes/update/${params.id}`,
+            await axiosPrivate.patch(`/notes/update/${params.id}`,
                 JSON.stringify({ title, con }),
                 {
                     headers: {

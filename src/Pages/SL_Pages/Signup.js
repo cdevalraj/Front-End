@@ -29,7 +29,7 @@ function Signup() {
             nav('/auth/login')
         }
         catch (er) {
-            console.log(er)
+            console.log(er.message)
         }
     }
 

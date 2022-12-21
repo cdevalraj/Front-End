@@ -22,7 +22,7 @@ function NotesPage() {
             }
             catch(er)
             {
-                console.error(er);
+                console.error(er.message);
                 navigate('/auth/login', { state: { from: location }, replace: true });
             }
         }

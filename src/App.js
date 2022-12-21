@@ -21,9 +21,9 @@ function App() {
         <Nav />
         <div>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
             <Route element={<PersistLogin />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
               <Route element={<RequireAuth AllowedRole={'Basic'} />}>
                 <Route path='/notes' element={<NotesPage />} />
                 <Route path="/note" element={<Note />} />

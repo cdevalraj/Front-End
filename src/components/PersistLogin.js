@@ -9,7 +9,7 @@ const PersistLogin = () => {
     const refresh = useRefreshToken();
     const LogOut = useLogOut()
     const { auth, persist } = useAuth();
-    const isTokenExpired = token => Date.now() >= (JSON.parse(atob(token.split('.')[1]))).exp * 1000
+    // const isTokenExpired = token => Date.now() >= (JSON.parse(atob(token.split('.')[1]))).exp * 1000
     /* eslint-disable*/
     useEffect(() => {
         let isMounted = true;
@@ -27,7 +27,7 @@ const PersistLogin = () => {
         const LogOutUser = async () => {
             try {
                 setIsLoading(false)
-                if((auth?.accessToken && isTokenExpired(auth.accessToken)) || (!auth?.accessToken))
+                if(!persist && !auth?.accessToken)
                     await LogOut()
             }
             catch (er) {

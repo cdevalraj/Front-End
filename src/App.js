@@ -27,7 +27,7 @@ function App() {
               <Route element={<RequireAuth AllowedRole={'Basic'} />}>
                 <Route path='/notes' element={<NotesPage />} />
                 <Route path="/note" element={<Note />} />
-                <Route path="/note/:id/:title/:con" element={<Note />} />
+                <Route path="/note/:id" element={<Note />} />
                 <Route path="/profile" element={<></>} />
               </Route>
               <Route element={<RequireAdminAuth AllowedRole={'Admin'} />}>

@@ -9,8 +9,8 @@ export default function Note() {
     const [con, setCon] = useState('')
     const { auth } = useAuth()
     const nav = useNavigate();
-    const params=useParams()
-    const axiosPrivate=useAxiosPrivate()
+    const params = useParams()
+    const axiosPrivate = useAxiosPrivate()
     const location = useLocation()
     const from = location.state?.from?.pathname || "/notes";
 
@@ -34,6 +34,7 @@ export default function Note() {
             console.log(er)
         }
     }
+
     async function submitHandler_Update(e) {
         e.preventDefault();
         try {
@@ -54,6 +55,7 @@ export default function Note() {
             console.log(er.message)
         }
     }
+
     async function submitHandler_delete(e) {
         e.preventDefault();
         try {
@@ -72,13 +74,30 @@ export default function Note() {
             console.log(er.message)
         }
     }
-    useEffect(()=>{
-        if(params.id)
-        {
-            setTitle(params.title)
-            setCon(params.con)
+
+    async function getter() {
+        try {
+            let res = await axiosPrivate.get(`/notes/${params.id}`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${auth?.accessToken}`
+                    }
+                }
+            );
+            setTitle(res.data.title)
+            setCon(res.data.content)
         }
-    },[params])
+        catch (er) {
+            console.log(er.message)
+        }
+    }
+
+    /* eslint-disable*/
+    useEffect(() => {
+
+        if (params.id)
+            getter()
+    }, [])
     return (
         <div>
             {!params.id && (<NoteForm title={title} setTitle={setTitle} con={con} setCon={setCon} submitHandler={submitHandler_Save} />)}

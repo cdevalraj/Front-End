@@ -48,7 +48,7 @@ function NotesPage() {
 function Notes({ notes }) {
     return notes.map((ele, idx) => {
         return (
-            <Link to={`/note/${ele._id}/${ele.title}/${ele.content}`} key={idx}>
+            <Link to={`/note/${ele._id}`} key={idx}>
                 <div className="note">
                     <h2>{ele.title}</h2>
                     <h5>{ele.content}</h5>

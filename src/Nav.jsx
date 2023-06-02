@@ -8,6 +8,7 @@ function Nav() {
     return (
         <nav>
             <Link to="/" className='link'>Home</Link>
+            {auth.accessToken && (<Link to="/video" className='link'>Video Chat</Link>)}
             {auth.accessToken && (<Link to="/notes" className='link'>Notes</Link>)}
             <Link to="/about" className='link'>About</Link>
             {!auth.accessToken && (<Link to="/auth/login" className='link'>Login/Signup</Link>)}

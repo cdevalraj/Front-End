@@ -13,6 +13,8 @@ import Admin from './Pages/Admin';
 import Note from './Pages/Note';
 import PersistLogin from './components/PersistLogin';
 import NotesPage from './Pages/NotesPage';
+import ZoomPage from './Pages/Zoom';
+import VideoChatPage from './Pages/VideoChat';
 
 function App() {
   return (
@@ -24,8 +26,10 @@ function App() {
             <Route element={<PersistLogin />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+                <Route path="/video/:roomId" element={<VideoChatPage />} />
               <Route element={<RequireAuth AllowedRole={'Basic'} />}>
                 <Route path='/notes' element={<NotesPage />} />
+                <Route path="/video" element={<ZoomPage />} />
                 <Route path="/note" element={<Note />} />
                 <Route path="/note/:id" element={<Note />} />
                 <Route path="/profile" element={<></>} />

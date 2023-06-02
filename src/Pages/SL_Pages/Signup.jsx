@@ -1,4 +1,4 @@
-import './forms.css';
+import '../styles/forms.css';
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ function Signup() {
     const SubmitHandler = async (e) => {
         e.preventDefault();
         try {
-            let v1=name.test(/^[A-Za-z ]{4,70}$/),v2=email.test(/[a-z0-9._]+@[a-z0-9]+\.[a-z]{2,}/),v3=pwd.test(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/)
+            let v1=name.match(/^[A-Za-z ]{4,70}$/),v2=email.match(/[a-z0-9._]+@[a-z0-9]+\.[a-z]{2,}/),v3=pwd.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/)
             if (v1 && v2 && v3 && pwd === conpwd) {
                 await axios.post('/auth/signup',
                     JSON.stringify({ name, email, pwd }),

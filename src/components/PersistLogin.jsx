@@ -27,7 +27,7 @@ const PersistLogin = () => {
         const LogOutUser = async () => {
             try {
                 setIsLoading(false)
-                if(!persist && !auth?.accessToken)
+                if(!persist && !auth.accessToken && auth.accessToken!==undefined)
                     await LogOut()
             }
             catch (er) {

@@ -18,7 +18,7 @@ export default function Note() {
         e.preventDefault();
         try {
             await axiosPrivate.post('/notes/save',
-                JSON.stringify({ username: auth.username, title, con }),
+                JSON.stringify({ title, con }),
                 {
                     headers: {
                         'Content-Type': 'application/json',

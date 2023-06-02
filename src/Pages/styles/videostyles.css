@@ -1,0 +1,41 @@
+#stream-wrapper{
+    height: 85vh;
+    width: 196.5vh;
+    margin-left: .26vh;
+    max-height: 85vh;
+    max-width: 196.5vh;
+    display: flex;
+    flex-direction: column;
+}
+#video-streams{
+    margin-top: 1%;
+    position: relative;
+}
+/* #video{
+    height: 84vh; 
+    width: 196.5vh;
+    background-color:steelblue;
+} */
+#local-stream{
+    width: 600px;
+    height: 400px;
+    background-color: black;
+}
+#remote-stream{
+    margin-left: 10%;
+    width: 600px;
+    height: 400px;
+    background-color: black;
+}
+/* .video{
+    max-width: 300px;
+    max-height: 200px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+#screen{
+    height: 84vh;
+    width: 196.5vh;
+    background-color: steelblue;
+} */

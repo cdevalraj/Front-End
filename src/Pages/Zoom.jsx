@@ -12,7 +12,7 @@ function ZoomPage() {
     async function handleJoin(e) {
         e.preventDefault();
         try {
-            await axiosPrivate.get('/room/verify',
+            await axiosPrivate.post('/room/verify',
                 JSON.stringify({ roomId: meet }),
                 {
                     headers: {

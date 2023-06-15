@@ -26,16 +26,16 @@ function App() {
             <Route element={<PersistLogin />}>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-                <Route path="/video/:roomId" element={<VideoChatPage />} />
               <Route element={<RequireAuth AllowedRole={'Basic'} />}>
                 <Route path='/notes' element={<NotesPage />} />
                 <Route path="/video" element={<ZoomPage />} />
+                <Route path="/video/:roomId" element={<VideoChatPage />} />
                 <Route path="/note" element={<Note />} />
                 <Route path="/note/:id" element={<Note />} />
                 <Route path="/profile" element={<></>} />
               </Route>
               <Route element={<RequireAdminAuth AllowedRole={'Admin'} />}>
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin" element={<Admin />} />c
               </Route>
             </Route>
             <Route element={<SLNav />}>

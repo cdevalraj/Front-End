@@ -11,7 +11,7 @@ const useRefreshToken = () => {
             return response.data.accessToken;
         }
         catch (er) {
-            if (er.response.status === 401 || er.response.status === 403) {
+            if (er.message==="Network Error" || (er.response && (er.response.status === 401 || er.response.status === 403))) {
                 setAuth({})
                 setPersist(false)
             }

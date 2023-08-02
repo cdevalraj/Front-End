@@ -15,6 +15,7 @@ import PersistLogin from './components/PersistLogin';
 import NotesPage from './Pages/NotesPage';
 import ZoomPage from './Pages/Zoom';
 import VideoChatPage from './Pages/VideoChat';
+import VCLobbyPage from './components/VideoChatLobbyPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route element={<RequireAuth AllowedRole={'Basic'} />}>
                 <Route path='/notes' element={<NotesPage />} />
                 <Route path="/video" element={<ZoomPage />} />
+                <Route path='/video/lobby' element={<VCLobbyPage />} />
                 <Route path="/video/:roomId" element={<VideoChatPage />} />
                 <Route path="/note" element={<Note />} />
                 <Route path="/note/:id" element={<Note />} />

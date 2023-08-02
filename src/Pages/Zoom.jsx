@@ -21,10 +21,11 @@ function ZoomPage() {
                     }
                 }
             );
-            nav(`/video/${meet}`);
+            nav('/video/lobby', { state: { roomId: meet } });
             setMeet('')
         }
         catch (er) {
+            // Wrong Room ID
             console.log(er.message)
         }
 
@@ -38,11 +39,12 @@ function ZoomPage() {
                         "Authorization": `Bearer ${auth.accessToken}`
                     }
                 }
-            )
-            nav(`/video/${res.data.roomid}`);
+            );
+            nav('/video/lobby', { state: { roomId: res.data.roomid } });
             setMeet('')
         }
         catch (er) {
+            // Failed To Generate Room
             console.log(er.message)
         }
     }
@@ -50,8 +52,10 @@ function ZoomPage() {
         <div>
             <div className="card">
                 <h1>Meeting</h1>
-                <input value={meet} onChange={(e) => setMeet(e.target.value)} required></input>
-                <button id="bt" onClick={handleJoin}>join</button>
+                <form onSubmit={handleJoin}>
+                    <input value={meet} onChange={(e) => setMeet(e.target.value)} required></input>
+                    <button id="bt">join</button>
+                </form>
             </div>
             <div className="card">
                 <h3>or</h3>

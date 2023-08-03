@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 // const URL = 'http://localhost:3001'
 const useSocket=()=>
 {
-    const URL=process.env.NODE_ENV==='production'?process.env.WSURL:'http://localhost:3001';
+    const URL=process.env.NODE_ENV==='production'?process.env.WSURL:(import.meta.env.VITE_URL) ? import.meta.env.VITE_URL : '';
     const {auth}=useAuth()
     const socket = io(URL, {
         autoConnect: false,

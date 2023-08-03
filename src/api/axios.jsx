@@ -1,10 +1,11 @@
 import axios from "axios";
+const URL = process.env.NODE_ENV === 'production' ? process.env.WSURL : (import.meta.env.VITE_URL) ? import.meta.env.VITE_URL : '';
 
 export default axios.create({
-    baseURL: "http://localhost:3001"
+    baseURL: URL
 })
 
 export const axiosPrivate = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: URL,
     withCredentials: true
 });

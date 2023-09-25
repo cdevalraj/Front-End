@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = process.env.NODE_ENV === 'production' ? process.env.WSURL : (import.meta.env.VITE_URL) ? import.meta.env.VITE_URL : '';
+const URL = (import.meta.env.PROD) ? (import.meta.env.WSURL) ? import.meta.env.WSURL : '' : (import.meta.env.VITE_URL) ? import.meta.env.VITE_URL : '';
 
 export default axios.create({
     baseURL: URL

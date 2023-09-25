@@ -5,7 +5,7 @@ import './index.css'
 import { AuthProvider } from './Context/AuthProvider';
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.PROD) {
   disableReactDevTools();
 }
 

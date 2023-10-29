@@ -48,26 +48,26 @@ const VideoChatPage = () => {
     const nav = useNavigate();
 
     useEffect(() => {
-        async function CheckRoom() {
-            try {
-                let res = await axiosPrivate.post('/room/verify',
-                    JSON.stringify({ roomId }),
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            "Authorization": `Bearer ${auth.accessToken}`
-                        }
-                    }
-                );
-            }
-            catch (er) {
-                if (er.response.status === 401 || er.response.status === 403) {
-                    nav('/video');
-                }
-                console.log(er.message);
-            }
-        }
-        CheckRoom();
+        // async function CheckRoom() {
+        //     try {
+        //         let res = await axiosPrivate.post('/room/verify',
+        //             JSON.stringify({ roomId }),
+        //             {
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     "Authorization": `Bearer ${auth.accessToken}`
+        //                 }
+        //             }
+        //         );
+        //     }
+        //     catch (er) {
+        //         if (er.response.status === 401 || er.response.status === 403) {
+        //             nav('/video');
+        //         }
+        //         console.log(er.message);
+        //     }
+        // }
+        // CheckRoom();
         socket.current.connect();
 
         /* Signalling */
@@ -133,7 +133,7 @@ const VideoChatPage = () => {
     }, []);
 
     const DestoryAll = () => {
-        console.log('Destorying Everthing!!!');
+        // console.log('Destorying Everthing!!!');
         if (localStream.current !== null && localStream.current.srcObject !== null) {
             localStream.current.srcObject.getTracks().forEach((track) => {
                 track.stop();
@@ -158,6 +158,15 @@ const VideoChatPage = () => {
         ele.autoplay = true;
         ele.controls = false;
         ele.playsInline = true;
+        const handleclick = () => {
+            ele.removeEventListener('click', handleclick, true);
+            ele.removeAttribute('poster');
+            ele.play();
+        }
+        ele.addEventListener('click', handleclick, true);
+        if (ele.paused === true) {
+            ele.poster = allowImg;
+        }
         return ele;
     };
     /* Handling PeerConnection */
@@ -176,15 +185,7 @@ const VideoChatPage = () => {
                 });
             }
             // Use the following event if you need to handle state change of connection between peers
-            pc.onconnectionstatechange = (event) => {
-                // console.log(pc.connectionState);
-                if (pc.connectionState === 'connected') {
-                    // console.log("Peers Connected");
-                    let remoteVideo = CreateVideoElement(userId);
-                    let remoteVideosContainer = document.getElementById('remote-streams');
-                    remoteVideosContainer.appendChild(remoteVideo);
-                }
-            };
+            pc.onconnectionstatechange = () => handleConnectionState(pc, userId);
             // Didn't Use this for the current implementation
             // pc.onnegotiationneeded = (event) => {
             //     console.log('Negotiation Needed', event);
@@ -288,20 +289,12 @@ const VideoChatPage = () => {
             // Create a new video element for the remote user
             remoteVideo = CreateVideoElement(userId);
         }
-        const handleclick = () => {
-            remoteVideo.removeEventListener('click', handleclick, true);
-            remoteVideo.play();
-        }
+
         if (remoteVideo.srcObject === null) {
             remoteVideo.srcObject = event.streams[0];
         }
         else {
             remoteVideo.srcObject.addTrack(event.track);
-        }
-
-        remoteVideo.addEventListener('click', handleclick, true);
-        if (remoteVideo.paused === true) {
-            remoteVideo.poster = allowImg;
         }
 
         // Update the reference object
@@ -349,6 +342,18 @@ const VideoChatPage = () => {
     const handleLeave = () => {
         DestoryAll();
         nav('/video');
+    };
+
+    const handleConnectionState = (pc, userId) => {
+        if (pc.connectionState === 'connected') {
+            // console.log("Peers Connected");
+            let remoteVideo = document.getElementById(`remote-stream-${userId}`);
+            if (!remoteVideo) {
+                remoteVideo = CreateVideoElement(userId);
+                let remoteVideosContainer = document.getElementById('remote-streams');
+                remoteVideosContainer.appendChild(remoteVideo);
+            }
+        }
     };
 
     // Video & Audio
